@@ -25,6 +25,18 @@ COHERE_MODEL = os.getenv("COHERE_MODEL", "command-xlarge-nightly")
 CURRENT_MODEL = f"Cohere Chat ({COHERE_MODEL})"
 
 
+def _get_secret(name, default=None):
+    """Busca la variable primero en el entorno y, si no está, en Streamlit secrets."""
+    value = os.getenv(name)
+    if value:
+        return value
+    try:
+        import streamlit as st
+        return st.secrets.get(name, default)
+    except Exception:
+        return default
+
+
 class SafeChatCohere(ChatCohere):
     def _get_generation_info(self, response: Any) -> Dict[str, Any]:
         info = {}
@@ -49,7 +61,7 @@ class SafeChatCohere(ChatCohere):
 
 
 def build_agent():
-    api_key = os.getenv("COHERE_API_KEY")
+    api_key = _get_secret("COHERE_API_KEY")
     if not api_key:
         raise EnvironmentError(
             "Falta la variable de entorno COHERE_API_KEY. "

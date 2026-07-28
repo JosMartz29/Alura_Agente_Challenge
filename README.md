@@ -1,12 +1,12 @@
 # 🤖 Alura Agente
 
-Agente de inteligencia artificial que responde preguntas en lenguaje natural sobre un documento interno (PDF o CSV), sin que la persona tenga que abrirlo. Proyecto final del **Challenge Alura Agente**.
+Agente de inteligencia artificial que responde preguntas en lenguaje natural sobre documentos internos en formato PDF o CSV. El proyecto está pensado para que cualquier persona pueda consultar información institucional sin abrir manualmente los archivos.
 
 ## 📋 Descripción general
 
-Cualquier persona colaboradora puede escribir una pregunta (por ejemplo: *"¿Cuál es la política de reembolsos?"*) y el agente busca la respuesta dentro del documento y la devuelve en lenguaje natural, citando los fragmentos utilizados.
+El usuario escribe una pregunta como “¿Cuál es la política de reembolsos?” y el agente busca la respuesta en los documentos cargados, recupera los fragmentos más relevantes y devuelve una respuesta en lenguaje natural.
 
-**Empresa:** BimBam Buy (e-commerce). El agente responde preguntas combinando 5 documentos internos:
+**Empresa:** BimBam Buy. El sistema está preparado para responder sobre documentos como:
 
 - Política de Reembolsos y Devoluciones
 - Programa de Afiliados
@@ -16,36 +16,35 @@ Cualquier persona colaboradora puede escribir una pregunta (por ejemplo: *"¿Cu�
 
 ## 🏗️ Arquitectura
 
-```
+```text
 Documento (PDF/CSV)
         │
         ▼
-  src/ingest.py  → divide el texto en fragmentos y genera embeddings (HuggingFace,
-        │            local, sin costo) → los guarda en un índice FAISS (data/index)
+  src/ingest.py  → divide el contenido en fragmentos y genera embeddings locales
+        │            con HuggingFace y los guarda en un índice FAISS en data/index
         ▼
   src/agent.py   → recupera los fragmentos más relevantes para la pregunta (RAG)
-        │            y se los pasa al modelo de lenguaje (Google Gemini) para
-        │            generar la respuesta final
+        │            y los envía al modelo de lenguaje de Cohere para generar la respuesta
         ▼
-     app.py      → interfaz web con Streamlit donde la persona escribe su pregunta
+     app.py      → interfaz web con Streamlit
 ```
 
-**Flujo (RAG — Retrieval Augmented Generation):**
-1. El documento se transforma en fragmentos pequeños de texto.
-2. Cada fragmento se convierte en un vector (embedding) y se guarda en un índice FAISS.
-3. Cuando llega una pregunta, se buscan los fragmentos más parecidos semánticamente.
-4. Esos fragmentos + la pregunta se envían al modelo de lenguaje, que redacta la respuesta final.
+**Flujo RAG:**
+1. El documento se divide en fragmentos pequeños.
+2. Cada fragmento se convierte en un embedding y se guarda en FAISS.
+3. Cuando llega una pregunta, el sistema recupera los fragmentos más similares.
+4. Esos fragmentos se envían al modelo junto con la pregunta para producir la respuesta final.
 
 ## 🛠️ Tecnologías utilizadas
 
-- **Python** — lenguaje del proyecto
-- **LangChain** — orquestación del agente (RAG)
-- **PyPDF / pandas (CSVLoader)** — lectura de documentos
-- **HuggingFace sentence-transformers** — embeddings locales y gratuitos
-- **FAISS** — base de datos vectorial local
-- **Cohere** — modelo de lenguaje que genera las respuestas
-- **Streamlit** — interfaz web
-- **OCI Compute** — despliegue en la nube
+- Python
+- Streamlit
+- LangChain
+- LangChain Community
+- HuggingFace sentence-transformers
+- FAISS
+- Cohere
+- PyPDF / CSVLoader
 
 ## ▶️ Cómo ejecutar el proyecto localmente
 
@@ -57,81 +56,57 @@ Documento (PDF/CSV)
 
 2. Crea un entorno virtual e instala las dependencias:
    ```bash
-   python -m venv venv
-   source venv/bin/activate        # En Windows: venv\Scripts\activate
+   python -m venv .venv
+   source .venv/bin/activate      # En Windows: .venv\Scripts\activate
    pip install -r requirements.txt
    ```
 
-3. Copia `.env.example` a `.env` y coloca tu API key de Cohere
-   (https://dashboard.cohere.com/signup):
+3. Copia el archivo de ejemplo a `.env` y agrega tu API key de Cohere:
    ```bash
    cp .env.example .env
    ```
 
-4. Coloca tu documento (PDF o CSV) dentro de la carpeta `data/`.
+4. Coloca tus documentos en la carpeta `data/`.
 
-5. Genera el índice de búsqueda (solo la primera vez o cuando cambies el documento):
-   ```bash
-   python src/ingest.py
-   ```
-
-6. Ejecuta la aplicación:
+5. Ejecuta la aplicación:
    ```bash
    streamlit run app.py
    ```
 
-7. Abre el navegador en `http://localhost:8501` y empieza a preguntar.
+6. Abre `http://localhost:8501` y empieza a preguntar.
 
-## 💬 Ejemplos de preguntas y respuestas
+> El índice FAISS se construye automáticamente al iniciar la app si aún no existe.
 
-| Pregunta | Respuesta del agente |
-|---|---|
-| ¿Cuántos días tengo para solicitar un reembolso? | [COMPLETAR: pegar la respuesta real que te dio el agente] |
-| ¿Qué métodos de pago acepta BimBam Buy? | [COMPLETAR] |
-| ¿Cuánto tarda el envío estándar y cuánto cuesta? | [COMPLETAR] |
-| ¿Cómo funciona el programa de afiliados? | [COMPLETAR] |
-| ¿Qué cubre la garantía de los productos? | [COMPLETAR] |
+## ☁️ Despliegue en Streamlit Community Cloud
 
-> Ejecuta la app, haz estas 5 preguntas (una por cada documento) y pega aquí las respuestas exactas que te dio el agente — así el evaluador ve que realmente combina las 5 fuentes.
+La aplicación está preparada para desplegarse de forma gratuita en Streamlit Community Cloud.
 
-## ☁️ Despliegue en OCI (Oracle Cloud Infrastructure)
+### Pasos recomendados
 
-La aplicación fue desplegada en una instancia **OCI Compute** (VM.Standard.E2.1.Micro — capa gratuita).
+1. Sube este repositorio a GitHub.
+2. Crea una nueva app en Streamlit Community Cloud y selecciona este repositorio.
+3. Define el archivo principal como `app.py`.
+4. Agrega los secretos en la sección de Secrets:
+   - `COHERE_API_KEY`
+   - `COHERE_MODEL` (opcional, por ejemplo `command-xlarge-nightly`)
 
-- **URL pública:** [COMPLETAR: http://TU_IP_PUBLICA:8501]
-- **Captura de pantalla:** ver `docs/deploy-screenshot.png` (o pega aquí la imagen)
-
-### Pasos que se siguieron para el despliegue
-
-1. Se creó una instancia gratuita en OCI (Ubuntu, VM.Standard.E2.1.Micro).
-2. Se abrió el puerto `8501` en la Security List / Network Security Group de la subred, y también con `sudo ufw allow 8501` dentro de la instancia.
-3. Se instalaron Python y git en la instancia:
-   ```bash
-   sudo apt update && sudo apt install -y python3-pip python3-venv git
-   ```
-4. Se clonó el repositorio y se instalaron las dependencias (mismos pasos que en local).
-5. Se colocó la API key en el archivo `.env` dentro de la instancia.
-6. Se ejecutó la aplicación de forma persistente:
-   ```bash
-   nohup streamlit run app.py --server.port 8501 --server.address 0.0.0.0 &
-   ```
-7. Se verificó el acceso público desde el navegador usando la IP pública de la instancia.
+La app podrá leer esos valores desde `.env` en local o desde `st.secrets` en la nube.
 
 ## 📁 Estructura del repositorio
 
-```
+```text
 alura-agente/
 ├── app.py                # Interfaz web (Streamlit)
 ├── requirements.txt
 ├── .env.example
-├── data/                  # Aquí se coloca el documento fuente (PDF/CSV)
+├── data/                 # Documentos fuente (PDF/CSV)
 └── src/
-    ├── ingest.py          # Procesa el documento y genera el índice FAISS
-    └── agent.py           # Lógica del agente (RAG + LLM)
+    ├── ingest.py         # Procesa documentos y genera el índice FAISS
+    └── agent.py          # Lógica del agente (RAG + LLM)
 ```
 
 ## ✅ Estado del proyecto
 
-- [x] Lectura y procesamiento del documento
+- [x] Lectura y procesamiento de documentos
 - [x] Agente funcional respondiendo preguntas
-- [ ] Evidencia de despliegue en OCI (agregar URL/captura antes de entregar)
+- [x] Preparado para despliegue en Streamlit Community Cloud
