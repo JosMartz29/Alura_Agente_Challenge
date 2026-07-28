@@ -1,5 +1,7 @@
 # 🤖 Alura Agente
 
+<img width="1833" height="682" alt="image" src="https://github.com/user-attachments/assets/d57afb52-5095-44b1-9b45-ab5712c2ebd1" />
+
 Agente de inteligencia artificial que responde preguntas en lenguaje natural sobre documentos internos en formato PDF o CSV. El proyecto está pensado para que cualquier persona pueda consultar información institucional sin abrir manualmente los archivos.
 
 ## 📋 Descripción general
@@ -50,7 +52,9 @@ Documento (PDF/CSV)
 
 | Pregunta | Respuesta del agente |
 |---|---|
-| ¿Cuántos días tengo para solicitar un reembolso? | [COMPLETAR: pegar la respuesta real que te dio el agente] |
+| ¿Cuántos días tengo para solicitar un reembolso? | Según la información proporcionada, no se especifica un plazo exacto para solicitar un reembolso en todos los casos. Sin embargo, en el Ejemplo 2 se menciona que un cliente puede solicitar una devolución por retracto dentro de los 10 días corridos después de recibir el producto, siempre que esté sin uso.
+
+Por lo tanto, para casos de retracto (devolución por cambio de opinión), el plazo es de 10 días corridos. Para otros casos, como daños o productos incorrectos, se recomienda presentar evidencia lo antes posible, como en el Ejemplo 1, donde se menciona un plazo de 48 horas para presentar evidencia fotográfica. |
 | ¿Qué métodos de pago acepta BimBam Buy? | [COMPLETAR] |
 | ¿Cuánto tarda el envío estándar y cuánto cuesta? | [COMPLETAR] |
 | ¿Cómo funciona el programa de afiliados? | [COMPLETAR] |
