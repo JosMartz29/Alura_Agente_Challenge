@@ -3,13 +3,14 @@ agent.py
 Construye el agente de preguntas y respuestas (RAG):
 1. Carga el índice FAISS generado por ingest.py
 2. Recupera los fragmentos más relevantes para la pregunta del usuario
-3. Le pide al modelo de lenguaje (Google Gemini) que responda usando esos fragmentos
+3. Le pide al modelo de lenguaje (Cohere Chat) que responda usando esos fragmentos
 """
 import os
+from typing import Any, Dict
 from dotenv import load_dotenv
 from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain_community.llms import Cohere
+from langchain_community.chat_models import ChatCohere
 
 try:
     from langchain.chains import RetrievalQA
@@ -21,6 +22,30 @@ load_dotenv()
 DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
 INDEX_DIR = os.path.join(DATA_DIR, "index")
 COHERE_MODEL = os.getenv("COHERE_MODEL", "command-xlarge-nightly")
+CURRENT_MODEL = f"Cohere Chat ({COHERE_MODEL})"
+
+
+class SafeChatCohere(ChatCohere):
+    def _get_generation_info(self, response: Any) -> Dict[str, Any]:
+        info = {}
+        if hasattr(response, "documents"):
+            info["documents"] = response.documents
+        if hasattr(response, "citations"):
+            info["citations"] = response.citations
+        if hasattr(response, "search_results"):
+            info["search_results"] = response.search_results
+        if hasattr(response, "search_queries"):
+            info["search_queries"] = response.search_queries
+        if hasattr(response, "token_count"):
+            info["token_count"] = response.token_count
+        elif getattr(response, "meta", None) is not None:
+            tokens = getattr(response.meta, "tokens", None)
+            if tokens is not None:
+                input_tokens = getattr(tokens, "input_tokens", None)
+                output_tokens = getattr(tokens, "output_tokens", None)
+                if input_tokens is not None and output_tokens is not None:
+                    info["token_count"] = input_tokens + output_tokens
+        return info
 
 
 def build_agent():
@@ -46,7 +71,7 @@ def build_agent():
     )
     retriever = vectorstore.as_retriever(search_kwargs={"k": 4})
 
-    llm = Cohere(model=COHERE_MODEL, cohere_api_key=api_key, temperature=0.2)
+    llm = SafeChatCohere(model=COHERE_MODEL, cohere_api_key=api_key, temperature=0.2)
 
     qa_chain = RetrievalQA.from_chain_type(
         llm=llm,

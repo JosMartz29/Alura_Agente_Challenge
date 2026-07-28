@@ -5,11 +5,12 @@ Ejecutar:
     streamlit run app.py --server.port 8501 --server.address 0.0.0.0
 """
 import streamlit as st
-from src.agent import build_agent, ask
+from src.agent import CURRENT_MODEL, build_agent, ask
 
 st.set_page_config(page_title="Alura Agente", page_icon="🤖")
 st.title("🤖 Alura Agente")
 st.caption("Hazme preguntas sobre el documento cargado y te responderé en lenguaje natural.")
+st.markdown(f"**Modelo actual:** {CURRENT_MODEL}")
 
 if "agent" not in st.session_state:
     with st.spinner("Cargando el agente..."):
