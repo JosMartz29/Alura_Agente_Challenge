@@ -46,6 +46,18 @@ Documento (PDF/CSV)
 - Cohere
 - PyPDF / CSVLoader
 
+## 💬 Ejemplos de preguntas y respuestas
+
+| Pregunta | Respuesta del agente |
+|---|---|
+| ¿Cuántos días tengo para solicitar un reembolso? | [COMPLETAR: pegar la respuesta real que te dio el agente] |
+| ¿Qué métodos de pago acepta BimBam Buy? | [COMPLETAR] |
+| ¿Cuánto tarda el envío estándar y cuánto cuesta? | [COMPLETAR] |
+| ¿Cómo funciona el programa de afiliados? | [COMPLETAR] |
+| ¿Qué cubre la garantía de los productos? | [COMPLETAR] |
+
+> Ejecuta la app, haz estas 5 preguntas (una por cada documento) y pega aquí las respuestas exactas que te dio el agente — así el evaluador ve que realmente combina las 5 fuentes.
+
 ## ▶️ Cómo ejecutar el proyecto localmente
 
 1. Clona el repositorio y entra a la carpeta:
