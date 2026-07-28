@@ -88,7 +88,7 @@ La aplicación está preparada para desplegarse de forma gratuita en Streamlit C
 3. Define el archivo principal como `app.py`.
 4. Agrega los secretos en la sección de Secrets:
    - `COHERE_API_KEY`
-   - `COHERE_MODEL` (opcional, por ejemplo `command-xlarge-nightly`)
+   - `COHERE_MODEL` (opcional, por ejemplo `command-a-03-2025`)
 
 La app podrá leer esos valores desde `.env` en local o desde `st.secrets` en la nube.
 
