@@ -102,7 +102,7 @@ La aplicación está preparada para desplegarse de forma gratuita en Streamlit C
    - `COHERE_API_KEY`
    - `COHERE_MODEL` (opcional, por ejemplo `command-a-03-2025`)
 
-La app podrá leer esos valores desde `.env` en local o desde `st.secrets` en la nube.
+La app podrá leer esos valores desde `.env` en local o desde `st.secrets` en la nube, incluyendo el modelo de Cohere que se usará para responder.
 
 ## 📁 Estructura del repositorio
 

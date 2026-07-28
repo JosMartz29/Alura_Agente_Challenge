@@ -10,7 +10,7 @@ from typing import Any, Dict
 from dotenv import load_dotenv
 from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain_community.chat_models import ChatCohere
+from langchain_cohere import ChatCohere
 
 try:
     from langchain.chains import RetrievalQA
@@ -21,8 +21,8 @@ load_dotenv()
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
 INDEX_DIR = os.path.join(DATA_DIR, "index")
-COHERE_MODEL = os.getenv("COHERE_MODEL", "command-xlarge-nightly")
-CURRENT_MODEL = f"Cohere Chat ({COHERE_MODEL})"
+COHERE_MODEL = None
+CURRENT_MODEL = "Cohere Chat"
 
 
 def _get_secret(name, default=None):
@@ -99,7 +99,12 @@ def build_agent():
     )
     retriever = vectorstore.as_retriever(search_kwargs={"k": 4})
 
-    llm = SafeChatCohere(model=COHERE_MODEL, cohere_api_key=api_key, temperature=0.2)
+    model_name = _get_secret("COHERE_MODEL", "command-a-03-2025")
+    global COHERE_MODEL
+    COHERE_MODEL = model_name
+    CURRENT_MODEL = f"Cohere Chat ({model_name})"
+
+    llm = SafeChatCohere(model=model_name, cohere_api_key=api_key, temperature=0.2)
 
     qa_chain = RetrievalQA.from_chain_type(
         llm=llm,
