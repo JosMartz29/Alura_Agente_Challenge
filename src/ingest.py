@@ -45,7 +45,9 @@ def load_document(path):
     return documents
 
 
-def main():
+def build_index():
+    """Construye el índice FAISS a partir de los documentos en /data.
+    Reutilizable tanto desde la línea de comandos como desde app.py."""
     source_paths = find_source_documents()
     print(f"Documentos encontrados ({len(source_paths)}):")
     for p in source_paths:
@@ -67,6 +69,11 @@ def main():
     os.makedirs(INDEX_DIR, exist_ok=True)
     vectorstore.save_local(INDEX_DIR)
     print(f"Índice FAISS guardado en: {INDEX_DIR}")
+    return INDEX_DIR
+
+
+def main():
+    build_index()
 
 
 if __name__ == "__main__":

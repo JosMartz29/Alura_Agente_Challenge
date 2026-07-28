@@ -4,13 +4,19 @@ Interfaz web mínima (Streamlit) para el Alura Agente.
 Ejecutar:
     streamlit run app.py --server.port 8501 --server.address 0.0.0.0
 """
+import os
 import streamlit as st
-from src.agent import CURRENT_MODEL, build_agent, ask
+from src.agent import CURRENT_MODEL, build_agent, ask, INDEX_DIR
+from src.ingest import build_index
 
 st.set_page_config(page_title="Alura Agente", page_icon="🤖")
 st.title("🤖 Alura Agente")
 st.caption("Hazme preguntas sobre el documento cargado y te responderé en lenguaje natural.")
 st.markdown(f"**Modelo actual:** {CURRENT_MODEL}")
+
+if not os.path.isdir(INDEX_DIR):
+    with st.spinner("Preparando el documento por primera vez (esto tarda un poco)..."):
+        build_index()
 
 if "agent" not in st.session_state:
     with st.spinner("Cargando el agente..."):
