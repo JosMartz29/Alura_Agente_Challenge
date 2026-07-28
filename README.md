@@ -52,13 +52,10 @@ Documento (PDF/CSV)
 
 | Pregunta | Respuesta del agente |
 |---|---|
-| ¿Cuántos días tengo para solicitar un reembolso? | Según la información proporcionada, no se especifica un plazo exacto para solicitar un reembolso en todos los casos. Sin embargo, en el Ejemplo 2 se menciona que un cliente puede solicitar una devolución por retracto dentro de los 10 días corridos después de recibir el producto, siempre que esté sin uso.
-
-Por lo tanto, para casos de retracto (devolución por cambio de opinión), el plazo es de 10 días corridos. Para otros casos, como daños o productos incorrectos, se recomienda presentar evidencia lo antes posible, como en el Ejemplo 1, donde se menciona un plazo de 48 horas para presentar evidencia fotográfica. |
-| ¿Qué métodos de pago acepta BimBam Buy? | [COMPLETAR] |
-| ¿Cuánto tarda el envío estándar y cuánto cuesta? | [COMPLETAR] |
-| ¿Cómo funciona el programa de afiliados? | [COMPLETAR] |
-| ¿Qué cubre la garantía de los productos? | [COMPLETAR] |
+| ¿Cuántos días tengo para solicitar una devolución por retracto? | 10 días corridos posteriores a la recepción del pedido, siempre que el producto cumpla los requisitos de elegibilidad (sin uso, completo, con empaque original cuando corresponda). |
+| ¿Qué cubre la garantía de los productos y qué la excluye? | Cubre fallas de fabricación, materiales o ensamblaje en condiciones normales de uso (falla de encendido, mal funcionamiento, defectos visibles al primer uso). No cubre daños por golpes o caídas, humedad o fuego, manipulación por terceros no autorizados, desgaste normal ni alteración de seriales. |
+| ¿Cuánto tarda en procesarse un reembolso y a qué medio de pago vuelve? | Entre 5 y 10 días hábiles desde la aprobación, dependiendo del método de pago y el país. El reembolso vuelve al mismo medio de pago original, salvo imposibilidad técnica o regulatoria. |
+| ¿Qué pasa con la comisión de un afiliado si el pedido que generó la venta termina en devolución? | La comisión puede ajustarse o reversarse según la política interna de BimBam Buy y la elegibilidad final de la venta, ya que el Programa de Afiliados está directamente vinculado a la Política de Reembolsos y Devoluciones. |
 
 > Ejecuta la app, haz estas 5 preguntas (una por cada documento) y pega aquí las respuestas exactas que te dio el agente — así el evaluador ve que realmente combina las 5 fuentes.
 
