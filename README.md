@@ -43,7 +43,7 @@ Documento (PDF/CSV)
 - **PyPDF / pandas (CSVLoader)** — lectura de documentos
 - **HuggingFace sentence-transformers** — embeddings locales y gratuitos
 - **FAISS** — base de datos vectorial local
-- **Google Gemini** (`langchain-google-genai`) — modelo de lenguaje que genera las respuestas
+- **Cohere** — modelo de lenguaje que genera las respuestas
 - **Streamlit** — interfaz web
 - **OCI Compute** — despliegue en la nube
 
@@ -62,8 +62,8 @@ Documento (PDF/CSV)
    pip install -r requirements.txt
    ```
 
-3. Copia `.env.example` a `.env` y coloca tu API key gratuita de Google AI Studio
-   (https://aistudio.google.com/app/apikey):
+3. Copia `.env.example` a `.env` y coloca tu API key de Cohere
+   (https://dashboard.cohere.com/signup):
    ```bash
    cp .env.example .env
    ```

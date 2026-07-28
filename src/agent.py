@@ -9,7 +9,7 @@ import os
 from dotenv import load_dotenv
 from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_community.llms import Cohere
 
 try:
     from langchain.chains import RetrievalQA
@@ -20,15 +20,15 @@ load_dotenv()
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
 INDEX_DIR = os.path.join(DATA_DIR, "index")
-GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
+COHERE_MODEL = os.getenv("COHERE_MODEL", "command-xlarge-nightly")
 
 
 def build_agent():
-    api_key = os.getenv("GOOGLE_API_KEY")
+    api_key = os.getenv("COHERE_API_KEY")
     if not api_key:
         raise EnvironmentError(
-            "Falta la variable de entorno GOOGLE_API_KEY. "
-            "Consigue una gratis en https://aistudio.google.com/app/apikey "
+            "Falta la variable de entorno COHERE_API_KEY. "
+            "Consigue una en https://dashboard.cohere.com/signup "
             "y colócala en un archivo .env (ver .env.example)."
         )
 
@@ -46,7 +46,7 @@ def build_agent():
     )
     retriever = vectorstore.as_retriever(search_kwargs={"k": 4})
 
-    llm = ChatGoogleGenerativeAI(model=GEMINI_MODEL, google_api_key=api_key, temperature=0.2)
+    llm = Cohere(model=COHERE_MODEL, cohere_api_key=api_key, temperature=0.2)
 
     qa_chain = RetrievalQA.from_chain_type(
         llm=llm,
@@ -66,7 +66,7 @@ def ask(agent, question: str):
         error_message = str(exc).lower()
         if "quota" in error_message or "resource exhausted" in error_message or "429" in error_message:
             return (
-                "No pude completar la respuesta porque la API de Gemini excedió su cuota o límite de solicitudes. "
+                "No pude completar la respuesta porque la API excedió su cuota o límite de solicitudes. "
                 "Prueba de nuevo más tarde o revisa la configuración de la API.",
                 [],
             )
